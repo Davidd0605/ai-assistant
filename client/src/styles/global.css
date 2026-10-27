@@ -1,0 +1,46 @@
+:root {
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --text: #1c1c1e;
+  --muted: #6e6e73;
+  --border: #e5e5e0;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-text: #ffffff;
+  --danger-bg: #fdecec;
+  --danger-text: #b42318;
+  --radius: 14px;
+  --content-width: 760px;
+
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111113;
+    --surface: #1c1c1f;
+    --text: #ededf0;
+    --muted: #9b9ba3;
+    --border: #2c2c31;
+    --accent: #818cf8;
+    --accent-hover: #a5b4fc;
+    --accent-text: #0f0f1a;
+    --danger-bg: #3a1616;
+    --danger-text: #fca5a5;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body { background: var(--bg); }
+
+/* Page layout: header on top, messages fill the middle, composer at the bottom */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
