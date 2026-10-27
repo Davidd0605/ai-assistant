@@ -10,5 +10,5 @@ export default function App() {
       .catch((err) => setHealth({ error: err.message }));
   }, []);
 
-  return <pre>{JSON.stringify(health, null, 2)}</pre>;
+  return <div> Test test: {health ? JSON.stringify(health) : 'Loading...'}</div>;
 }
