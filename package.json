@@ -1,0 +1,22 @@
+{
+  "name": "ai_assistant",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+"scripts": {
+  "postinstall": "npm install --prefix server && npm install --prefix client",
+  "dev": "concurrently -k -n server,client -c blue,magenta \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+  "build": "npm run build --prefix client",
+  "start": "npm start --prefix server",
+  "prod": "npm run build && npm start",
+  "prod:watch": "concurrently -k -n build,server -c magenta,blue \"npm run build --prefix client -- --watch\" \"npm run dev --prefix server\"",
+  "clean": "node -e \"require('fs').rmSync('client/dist', { recursive: true, force: true })\""
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}

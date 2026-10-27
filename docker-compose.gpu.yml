@@ -1,0 +1,33 @@
+name: ai-assistant
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    env_file:
+      - server/.env
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    gpus: all
+    volumes:
+      - ollama-models:/root/.ollama
+    environment:
+      OLLAMA_KEEP_ALIVE: 30m
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  ollama-models:
