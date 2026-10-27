@@ -1,0 +1,43 @@
+name: Deploy
+
+on:
+  push:
+    branches: [prod]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, home-server]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v5
+
+      - name: Put secrets in place
+        run: cp /opt/ai-assistant/.env server/.env
+
+      - name: Build and start containers
+        run: docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d --build --remove-orphans
+
+      - name: Make sure the model is downloaded
+        run: |
+          MODEL=$(grep '^OLLAMA_MODEL=' server/.env | cut -d= -f2)
+          docker compose exec -T ollama ollama pull "$MODEL"
+
+      - name: Health check
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:3001/api/health; then
+              echo; echo "App is up"; exit 0
+            fi
+            sleep 2
+          done
+          echo "App did not come up. Last logs:"
+          docker compose logs --tail 50 app
+          exit 1
+
+      - name: Clean up old images
+        run: docker image prune -f
