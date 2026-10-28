@@ -3,6 +3,7 @@ import Header from './components/Header/Header.jsx';
 import MessageList from './components/MessageList/MessageList.jsx';
 import { useChat } from './hooks/useChat.js';
 
+// test comment
 export default function App() {
   const { messages, loading, send } = useChat();
 
